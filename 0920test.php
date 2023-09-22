@@ -29,7 +29,7 @@
         {
             for($i=count($array_rnd);$i<=3;$i++)
             {
-                if($array_rnd[$i]!=null)
+                if(isset($array_rnd[$i]) && $array_rnd[$i] != null)
                 {
                     $array_rnd=array_unique($array_rnd);
                 }
@@ -55,10 +55,11 @@
             session_unset();
         }
     }
-    
 
     echo "<br>";
     print_r($_SESSION['array_save']);
+
+
 
 ?>
 </html>
