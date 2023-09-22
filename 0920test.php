@@ -20,6 +20,15 @@
 
     function random_numbers(){
         $array_rnd=array();
+        $btn=1;
+
+        if($btn<=10)
+        {
+            $btn=$btn++;
+        }
+        else if ($btn>10)
+            $btn=1; 
+
         for($i=0;$i<3;$i++)
             $array_rnd[$i]=rand(0,9);
 
@@ -45,6 +54,8 @@
             unset($array_rnd[3]);
 
         print_r($array_rnd);
+        if(abs($array_rnd[1]-$array_rnd[0]) == abs($array_rnd[2]-$array_rnd[1]))
+        echo "成功！總共使用了".$btn."次";
         return $array_rnd;
     }
 
