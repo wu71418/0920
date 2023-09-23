@@ -4,6 +4,7 @@
     </head>
     <body>
         <form method="post" action="">
+            <button name='clean' >清除</button>
             <input type="submit" name="button" value="送出">
     </body>
 
@@ -13,6 +14,10 @@
     if(isset($_POST['button'])){
         $array_rnd=random_numbers();
         save_num($array_rnd,$_SESSION['array_save']);
+    }
+
+    if(isset($_POST['clean'])){
+        session_unset();
     }
 
     if(!isset($_SESSION['array_save']))
@@ -61,6 +66,7 @@
 
     function save_num($array_rnd, &$array_save) {
         $array_save[] = $array_rnd;
+        print_r($_SESSION['array_save']);
 
         if(count($array_save)>10){
             session_unset();
@@ -68,9 +74,6 @@
     }
 
     echo "<br>";
-    print_r($_SESSION['array_save']);
-
-
 
 ?>
 </html>
