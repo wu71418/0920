@@ -75,5 +75,20 @@
 
     echo "<br>";
 
+    function sql_connect(){
+        $link=@mysqli_connect(
+            'localhost',
+            'root',
+            '',
+            'sqlserver');
+    
+        if(!$link)
+        {
+            echo "連線錯誤";
+        }
+        else
+            echo "連線成功";
+    }
+
 ?>
 </html>
