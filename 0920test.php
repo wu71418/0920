@@ -17,6 +17,9 @@
     if(!isset($_SESSION['array_save']))
         $_SESSION['array_save']=array();
 
+    if (!isset($_SESSION['access_save']))
+        $_SESSION['access_save'] = array();
+
     if(isset($_POST['button']))
     {
         $array_rnd=random_numbers();
@@ -25,6 +28,7 @@
             $_SESSION['btn_count']=$_SESSION['btn_count']+1;
         else
         {
+            echo "本次已達十次！已經存入資料庫囉！";
             require_once 'db.php';
             session_unset();
         }
@@ -64,7 +68,8 @@
         print_r($array_rnd);
         if (isset($array_rnd[1])) {
             if (abs($array_rnd[1] - $array_rnd[0]) == abs($array_rnd[2] - $array_rnd[1])) {
-                echo "成功！總共使用了" . $_SESSION['btn_count'] . "次";
+                echo "<br>";
+                echo "成功！總共使用了" . $_SESSION['btn_count']+1 . "次";
                 require_once 'db.php';
                 }
         
@@ -73,12 +78,24 @@
 
     function save_num($array_rnd, &$array_save) {
         $array_save[] = $array_rnd;
+        echo "<br>";
         print_r($_SESSION['array_save']);
-
-        if(count($array_save)>10){
+        
+        $record = array(
+            'rec' => $array_rnd 
+        );
+        
+        if (!isset($_SESSION['access_save'])) {
+            $_SESSION['access_save'] = array();
+        }
+    
+        $_SESSION['access_save'][] = $record;
+    
+        if (count($array_save) > 10) {
             session_unset();
         }
     }
+    
 
     echo "<br>";
 ?>
