@@ -11,28 +11,31 @@
 <?php
     session_start();
 
-    if(isset($_POST['button'])){
-        $array_rnd=random_numbers();
-        save_num($array_rnd,$_SESSION['array_save']);
-    }
-
-    if(isset($_POST['clean'])){
-        session_unset();
-    }
+    if (!isset($_SESSION['btn_count'])) 
+        $_SESSION['btn_count'] = 0;
 
     if(!isset($_SESSION['array_save']))
         $_SESSION['array_save']=array();
 
-    function random_numbers(){
-        $array_rnd=array();
-        $btn=1;
-
-        if($btn<=10)
+    if(isset($_POST['button']))
+    {
+        $array_rnd=random_numbers();
+        save_num($array_rnd,$_SESSION['array_save']);
+        if($_SESSION['btn_count']<9)
+            $_SESSION['btn_count']=$_SESSION['btn_count']+1;
+        else
         {
-            $btn=$btn++;
+            require_once 'db.php';
+            session_unset();
         }
-        else if ($btn>10)
-            $btn=1; 
+    }
+
+    if(isset($_POST['clean']))
+        session_unset();
+
+    function random_numbers()
+    {
+        $array_rnd=array();
 
         for($i=0;$i<3;$i++)
             $array_rnd[$i]=rand(0,9);
@@ -59,9 +62,13 @@
             unset($array_rnd[3]);
 
         print_r($array_rnd);
-        if(abs($array_rnd[1]-$array_rnd[0]) == abs($array_rnd[2]-$array_rnd[1]))
-        echo "成功！總共使用了".$btn."次";
-        return $array_rnd;
+        if (isset($array_rnd[1])) {
+            if (abs($array_rnd[1] - $array_rnd[0]) == abs($array_rnd[2] - $array_rnd[1])) {
+                echo "成功！總共使用了" . $_SESSION['btn_count'] . "次";
+                require_once 'db.php';
+                }
+        
+        }      return $array_rnd;
     }
 
     function save_num($array_rnd, &$array_save) {
@@ -74,21 +81,5 @@
     }
 
     echo "<br>";
-
-    function sql_connect(){
-        $link=@mysqli_connect(
-            'localhost',
-            'root',
-            '',
-            'sqlserver');
-    
-        if(!$link)
-        {
-            echo "連線錯誤";
-        }
-        else
-            echo "連線成功";
-    }
-
 ?>
 </html>
